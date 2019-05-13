@@ -7,5 +7,4 @@ before_script:
   - docker ps
 before_install:
   - docker build -t shimschiff/employees .
-  - docker run -p 3000:3000 --link households-mongodb:mongodb shimschiff/employees
   - docker ps -a
