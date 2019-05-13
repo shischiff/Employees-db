@@ -1,2 +1,11 @@
 language: node_js
-services: mongodb
+services:
+  - mongodb
+  - docker
+before_script:
+  - sleep 15
+  - docker ps
+before_install:
+  - docker build -t shimschiff/employees .
+  - docker run -p 3000:3000 --link households-mongodb:mongodb shimschiff/employees
+  - docker ps -a
