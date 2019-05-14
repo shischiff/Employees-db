@@ -1,10 +1,11 @@
 language: node_js
 services:
-  - mongodb
   - docker
-before_script:
-  - sleep 15
-  - docker ps
 before_install:
   - docker build -t shimschiff/employees .
   - docker ps -a
+deploy:
+  provider: script
+  script: bash docker_push.sh
+  on:
+    branch: master

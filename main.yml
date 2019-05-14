@@ -1,0 +1,22 @@
+---
+- hosts: localhost
+  remote_user: remote_username
+  become: yes
+  become_method: sudo
+  tasks:
+    - name: Running mongodb
+      docker_container:
+        name: mongodb
+        image: mongo:latest
+        state: started
+        ports:
+         - "27017:27017"
+    - name: Running the app
+      docker_container:
+        name: employees
+        image: shschiff/employees:latest
+        state: started
+        links:
+         - "mongodb:mongodb"
+        ports:
+         - "3000:3000"
