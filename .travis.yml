@@ -5,7 +5,7 @@ services:
 before_script:
   - docker build -t shschiff/employees-test -f Dockerfile.test .
 script:
-  - docker run --rm -p 3000:3000 --link mongodb:mongodb shschiff/employees-test
+  - docker run --rm -p 3000:3000 shschiff/employees-test
 after_success:
   - docker build -t shschiff/employees -f Dockerfile.prod .
   - docker push shimschiff/employees
