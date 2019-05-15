@@ -2,5 +2,10 @@ language: node_js
 services:
   - docker
   - mongodb
-script:
-  npm test
+
+before_install:
+  - docker build -t shschiff/employees .
+  - docker pull mongo:latest
+  - docker run -d --name mongodb -p 27017:27017 mongo
+  - docker run -p 3000:3000 --link mongodb:mongodb shschiff/employees
+  - docker ps -a
