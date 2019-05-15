@@ -1,18 +1,20 @@
 language: node_js
-services:
-  - docker
+env:
+  global:
+  - secure: uSFc+68l6zGYVSF6TfXEKYySOJ6x1HDAyrRAKuVjjzL0loON/IA7L4kHzsF1qwSBPKyE1ubVN4YXM3xnFtnz39kRy4J4E8VT6kXArklV/Z3NTvynaId2E/leYxpOJ0vVurqdE8cRPgtiP3uUvNgOh8CJEVUJmk2NiA+SpSYeTv1O/zQ6Joit7XWbKYzSC4nJCS5uy35f7t1K253ZvrPgmBsEC18VxqBppxsCLGxZ75bYZvCwYRwVnO8VRzcd9qM9Z6oSn9/Bw81LfBp1QgpE5I3Tiw90kKUlKZmFV6oU6MKnvxHOtl+DGoQZUgZ4AKlStC7izFdPmStZublolNFv7KCiYeP3VP5Pj353+wWpXx3JAvOijLs903cpxRklG71oE4HlHfkKKzK94+sHo6wJN7TGKxscWIk6TSDPfD9DAloJ3ItDoH1Vdt6EUQaxEZft+HDYg+eVOlUL2ea6bwWx5sRRuhg9D8WXv6OjsiePmLvLuus6W6AMmXBpavFUuoubFKkQ3NTdAWQfTtwcYV7rejXN/JUEfIq5o1NwmfAawJyn97MJxM0qvUHZ/nfIT92y5O/PrOwlvFgk09fKsdUf5ZAXefaMdUFFbGaleS2tgQR5ordpO1hCZ9eZ4VWEa9gHDpXOnJGDTTLrYCUUhSKNIzKH1QBJzvQlk0sia5uQH+M=
+  - secure: B7v2CEXp+hVjq2BWiyWKiHgefUjPZw4x02PMrulnQO8ClJnM4rEJXFk+1vOtHOD+qxqWHIS8TXJgvpsdSBJFThbhWx8iqshq10p78IqaV9Ai2X1m8iSRQXhTHUZJp8Ci+Gx9nQEJ+FTXwEbjXUDw8rABbF1txPvWL0axOgQVnT0NACZIxIFh9nXFseyWMWnc8UbG5yCY/XGacH6Dn/b1jLHwfLhC+7QlV0EPNQ0lNK+5BOlSaEbyaeJ79j6kUKY5aPn3mMEFnP7kjBlu9Y9KELCM/u9Dbn01FJ4h11UoQbQpTydhZgOQ+KEY/vvOBPJ6lBa+kSSv4n8zaFlY/o4tVf00MQ5JxB2E4oFBt5U2J3mtDfx+NmnbDsXYAGYdoqsAKX8sKE6pzshjhTwzKdb89LvBCzy9Pivm0mr3vcXv47RR+ccSl7ev29jJdZArnhqrC0kLH2NkRnCB5oxkG5fZBjh/aLrVHmLxra/1mDIeCY9RzvK+B8De/AURBhiqPuLgXBoXlY6KEffsft5nhNHBj/ChbVuJywhH4g8FTPAKHBksDTiIH+k1g+fpvizv3MtV+XFJHxCNlj05GGQqxkdpWndW0f/oQ1kcEsLMbOuidmCiJn1pShTtaTFmZsXz33wu7vNGLBzPttjNmCF5++7RSN5RnSjpld2VF5FumIS2OOI=
 
+services:
+- docker
+install: true
 before_script:
-  - docker build -t shschiff/employees-test -f Dockerfile.test .
+- docker build -t shschiff/employees-test -f Dockerfile.test .
 script:
-  - docker run --rm -p 3000:3000 shschiff/employees-test
+- docker run --rm -p 3000:3000 shschiff/employees-test
 after_success:
-  - docker build -t shschiff/employees -f Dockerfile.prod .
-  - docker push shimschiff/employees
-deploy:
-  provider: script
-  script: echo "ansible.sh"
-  on:
-    branch: master
+- docker login -u $DOCKER_USER -p $DOCKER_PASS
+- export REPO=shschiff/employees
+- docker build -f Dockerfile.prod -t $REPO .
+- docker push $REPO
 after_failure:
-  - echo "tests failed - rejected"
+- echo "tests failed - rejected"
