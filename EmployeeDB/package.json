@@ -3,15 +3,15 @@
   "version": "0.0.1",
   "private": true,
   "scripts": {
-    "start": "node app"
+    "test": "node_modules/mocha/bin/mocha --exit"
   },
   "dependencies": {
+    "chai": "^4.2.0",
     "express": "3.1.0",
     "jade": "*",
-    "stylus": "*",
-    "mongodb": ">= 0.9.6-7"
-  },
-  "scripts": {
-    "test": "../node_modules/mocha/bin/mocha"
+    "mocha": "^6.1.4",
+    "mongodb": ">= 0.9.6-7",
+    "request": "^2.88.0",
+    "stylus": "*"
   }
 }
