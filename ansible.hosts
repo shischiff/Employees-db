@@ -1,2 +1,2 @@
 [aws]
-34.245.137.196
+34.245.137.196 ansible_ssh_extra_args='-o StrictHostKeyChecking=no'
