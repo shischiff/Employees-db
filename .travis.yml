@@ -13,9 +13,5 @@ before_script:
 script:
 - docker run --rm -p 3000:3000 shschiff/employees-test
 after_success:
-- docker login -u ${DOCKER_USER} -p ${DOCKER_PASS}
-- export REPO=shschiff/employees
-- docker build -f Dockerfile.prod -t ${REPO} .
-- docker push ${REPO}
-after_failure:
-- echo "tests failed - rejected"
+  -ansible all -m ping -i ansible.hosts -u ec2-user
+  -ansible-playbook main.yml -i ansible.hosts
