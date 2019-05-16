@@ -11,7 +11,8 @@ before_script:
   - echo ${aRUtkhorJbo}
   - docker build -t shschiff/employees-test -f Dockerfile.test .
 script:
-- docker run --rm -p 3000:3000 shschiff/employees-test
+  - docker run --rm -p 3000:3000 shschiff/employees-test
 after_success:
-  -ansible all -m ping -i ansible.hosts -u ec2-user
-  -ansible-playbook main.yml -i ansible.hosts
+  - pip install ansible
+  - ansible all -m ping -i ansible.hosts -u ec2-user
+  - ansible-playbook main.yml -i ansible.hosts
