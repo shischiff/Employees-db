@@ -4,7 +4,7 @@ services:
 
 before_install:
 - openssl aes-256-cbc -K $encrypted_fd565dd073a0_key -iv $encrypted_fd565dd073a0_iv
-  -in id_rsa.enc -out ~\/.ssh/id_rsa -d
+  -in id_rsa.enc -out ./deploy_key -d
 
 install: true
 
