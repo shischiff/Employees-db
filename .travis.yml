@@ -1,19 +1,36 @@
 language: node_js
 services:
-  - docker
+- docker
+
+before_install:
+- openssl aes-256-cbc -K $encrypted_fd565dd073a0_key -iv $encrypted_fd565dd073a0_iv
+  -in id_rsa.enc -out ~\/.ssh/id_rsa -d
+
 install: true
+
 before_script:
-  - docker build -t shschiff/employees-test -f Dockerfile.test .
+- docker build -t shschiff/employees-test -f Dockerfile.test .
+
 script:
-  - docker run --rm -p 3000:3000 shschiff/employees-test
+- docker run --rm -p 3000:3000 shschiff/employees-test
+
 after_success:
-  - sudo apt-get install -y software-properties-common
-  - sudo apt-add-repository -y ppa:ansible/ansible
-  - sudo apt-get -y update
-  - sudo apt-get install -y ansible
-  - ansible all -m ping -i ansible.hosts -u ec2-user
-  - ansible-playbook main.yml -i ansible.hosts
-  - docker login -u ${DOCKER_USER} -p ${DOCKER_PASS}
-  - export REPO=shschiff/employees
-  - docker build -f Dockerfile.prod -t ${REPO} .
-  - docker push ${REPO}
+- docker login -u ${DOCKER_USER} -p ${DOCKER_PASS}
+- export REPO=shschiff/employees
+- docker build -f Dockerfile.prod -t ${REPO} .
+- docker push ${REPO}
+
+- sudo apt-get install -y software-properties-common
+- sudo apt-add-repository -y ppa:ansible/ansible
+- sudo apt-get -y update
+- sudo apt-get install -y ansible
+
+- eval "$(ssh-agent -s)"
+- chmod 600 ./deploy_key
+- ssh-add ./deploy_key
+
+- ansible all -m ping -i ansible.hosts -u ec2-user
+- ansible-playbook main.yml -i ansible.hosts
+
+after_failure:
+- echo "tests failed - rejected"
