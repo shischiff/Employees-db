@@ -11,6 +11,8 @@
         state: started
         ports:
          - "27017:27017"
+    - name: pull latest
+      raw: docker pull shschiff/employees:latest
     - name: Running the app
       docker_container:
         name: employees
