@@ -12,7 +12,7 @@ script:
 after_success:
 - docker login -u ${DOCKER_USER} -p ${DOCKER_PASS}
 - export REPO=shschiff/employees
-- docker build -f deployment/Dockerfile.prod -t ${REPO} .
+- docker build -f deploy/Dockerfile.prod -t ${REPO} .
 - docker push ${REPO}
 
 - sudo apt-get install -y software-properties-common
