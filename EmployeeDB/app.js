@@ -37,7 +37,7 @@ var employeeProvider= new EmployeeProvider('mongodb', 27017);
 app.get('/', function(req, res){
   employeeProvider.findAll(function(error, emps){
       res.render('index', {
-            title: 'Employees',
+            title: 'Tikal - Employees',
             employees:emps
         });
   });
