@@ -17,7 +17,6 @@
       docker_container:
         name: employees
         image: shschiff/employees:latest
-        source: pull
         state: started
         links:
          - "mongodb:mongodb"
